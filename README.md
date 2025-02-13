@@ -13,40 +13,46 @@ Examples of API requests for different captcha types are available on the [Golan
 - [Golang Module for 2Captcha API](#golang-module-for-2captcha-api)
   - [Installation](#installation)
   - [Configuration](#configuration)
+      - [Client instance options](#client-instance-options)
   - [Solve captcha](#solve-captcha)
+    - [Captcha options](#captcha-options)
+    - [Basic example](#basic-example)
     - [Normal Captcha](#normal-captcha)
-    - [Text](#text-captcha)
-    - [ReCaptcha v2](#recaptcha-v2)
-    - [ReCaptcha v3](#recaptcha-v3)
+    - [Text Captcha](#text-captcha)
+    - [reCAPTCHA v2](#recaptcha-v2)
+    - [reCAPTCHA v3](#recaptcha-v3)
     - [reCAPTCHA Enterprise](#recaptcha-enterprise)
     - [FunCaptcha](#funcaptcha)
     - [GeeTest](#geetest)
-    - [hCaptcha](#hcaptcha)
+    - [GeeTest V4](#geetest-v4)
     - [KeyCaptcha](#keycaptcha)
     - [Capy](#capy)
-    - [Grid (ReCaptcha V2 Old Method)](#grid)
+    - [Grid](#grid)
     - [Canvas](#canvas)
     - [ClickCaptcha](#clickcaptcha)
     - [Rotate](#rotate)
-    - [AmazonWAF](#amazon-waf)
-    - [CloudflareTurnstile](#cloudflare-turnstile)
+    - [Amazon WAF](#amazon-waf)
+    - [Cloudflare Turnstile](#cloudflare-turnstile)
     - [Lemin Cropped Captcha](#lemin-cropped-captcha)
-    - [GeeTestV4](#geetestv4)
     - [CyberSiARA](#cybersiara)
     - [DataDome](#datadome)
     - [MTCaptcha](#mtcaptcha)
+    - [Yandex](#yandex)
     - [Tencent](#tencent)
-    - [AtbCAPTCHA](#atbcaptcha)
+    - [atbCAPTCHA](#atbcaptcha)
     - [Cutcaptcha](#cutcaptcha)
-    - [FriendlyCaptcha](#friendlycaptcha)
-    - [Audio](#audio)
+    - [Friendly Captcha](#friendly-captcha)
+    - [Audio Captcha](#audio-captcha)
   - [Other methods](#other-methods)
     - [send / getResult](#send--getresult)
     - [balance](#balance)
     - [report](#report)
   - [Proxies](#proxies)
+  - [Examples](#examples)
 - [Get in touch](#get-in-touch)
 - [Join the team 👪](#join-the-team-)
+- [License](#license)
+   - [Graphics and Trademarks](#graphics-and-trademarks)
 
 ## Installation
 To install the api client, use this:
@@ -80,13 +86,14 @@ client.PollingInterval = 100
 
 |Option|Default value|Description|
 |---|---|---|
-|soft_id|4583|Your software ID obtained after publishing in [2captcha sofware catalog]|
+|soft_id|4583|Your software ID obtained after publishing in [2captcha software catalog]|
 |callback|-|URL of your web-sever that receives the captcha recognition result. The URl should be first registered in [pingback settings] of your account|
-|default_timeout|120|Timeout in seconds for all captcha types except ReCaptcha. Defines how long the module tries to get the answer from `res.php` API endpoint|
-|recaptcha_timeout|600|Timeout for ReCaptcha in seconds. Defines how long the module tries to get the answer from `res.php` API endpoint|
+|default_timeout|120|Timeout in seconds for all captcha types except reCAPTCHA. Defines how long the module tries to get the answer from `res.php` API endpoint|
+|recaptcha_timeout|600|Timeout for reCAPTCHA in seconds. Defines how long the module tries to get the answer from `res.php` API endpoint|
 |polling_interval|10|Interval in seconds between requests to `res.php` API endpoint, setting values less than 5 seconds is not recommended|
 
 >  **IMPORTANT:** once *callback URL* is defined for `client` instance, all methods return only the captcha ID and DO NOT poll the API to get the result. The result will be sent to the callback URL.
+
 To get the answer manually use [GetResult method](#send--getresult)
 
 ## Solve captcha
@@ -96,7 +103,7 @@ When you submit any image-based captcha use can provide additional options to he
 |Option|Default Value|Description|
 |---|---|---|
 |numeric|0|Defines if captcha contains numeric or other symbols [see more info in the API docs][post options]|
-|min_len|0|minimal answer lenght|
+|min_len|0|minimal answer length|
 |max_len|0|maximum answer length|
 |phrase|0|defines if the answer contains multiple words or not|
 |case_sensitive|0|defines if the answer is case sensitive|
@@ -131,6 +138,9 @@ fmt.Println("code "+code)
 ```
 
 ### Normal Captcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_normal_captcha)</sup>
+
 To bypass a normal captcha (distorted text on image) use the following method. This method also can be used to recognize any text on the image.
 
 ```go
@@ -148,6 +158,9 @@ captcha:= api2captcha.Normal{
 ```
 
 ### Text Captcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_text_captcha)</sup>
+
 This method can be used to bypass a captcha that requires to answer a question provided in clear text.
 
 ```go
@@ -157,8 +170,11 @@ captcha:= api2captcha.Text{
 }
 ```
 
-### ReCaptcha v2
-Use this method to solve ReCaptcha V2 and obtain a token to bypass the protection.
+### reCAPTCHA v2
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_recaptchav2_new)</sup>
+
+Use this method to solve reCAPTCHA V2 and obtain a token to bypass the protection.
 
 ```go
 captcha := api2captcha.ReCaptcha{
@@ -172,8 +188,11 @@ req.SetProxy("HTTPS", "login:password@IP_address:PORT")
 code, err := client.Solve(req)
 ```
 
-### ReCaptcha v3
-This method provides ReCaptcha V3 solver and returns a token.
+### reCAPTCHA v3
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_recaptchav3)</sup>
+
+This method provides reCAPTCHA V3 solver and returns a token.
 
 ```go
 captcha := api2captcha.ReCaptcha{
@@ -189,6 +208,9 @@ code, err := client.Solve(req)
 ```
 
 ### reCAPTCHA Enterprise
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_recaptcha_enterprise)</sup>
+
 reCAPTCHA Enterprise can be used as reCAPTCHA V2 and reCAPTCHA V3. Below is a usage example for both versions.
 
 ```go
@@ -217,6 +239,9 @@ code, err := client.Solve(req)
 ```
 
 ### FunCaptcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_funcaptcha_new)</sup>
+
 FunCaptcha (Arkoselabs) solving method. Returns a token.
 
 ```go
@@ -233,6 +258,9 @@ code, err := client.Solve(req)
 ```
 
 ### GeeTest
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_geetest)</sup>
+
 Method to solve GeeTest puzzle captcha. Returns a set of tokens as JSON.
 
 ```go
@@ -247,20 +275,23 @@ req.SetProxy("HTTPS", "login:password@IP_address:PORT")
 code, err := client.Solve(req)
 ```
 
-### hCaptcha
-Method to solve GeeTest puzzle captcha. Returns a set of tokens as JSON.
+### GeeTest V4
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#geetest-v4)</sup>
+
+Use this method to solve GeeTest v4. Returns the response in JSON.
 
 ```go
-captcha:= api2captcha.HCaptcha{
-   SiteKey: "10000000-ffff-ffff-ffff-000000000001",
-   Url: "https://mysite.com/captcha.html",
+captcha:= api2captcha.GeeTestV4{
+    CaptchaId: "e392e1d7fd421dc63325744d5a2b9c73",
+    Url: "https://www.site.com/page/",
 }
-req := captchaToRequest()
-req.SetProxy("HTTPS", "login:password@IP_address:PORT")
-code, err := client.Solve(req)
 ```
 
 ### KeyCaptcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_keycaptcha)</sup>
+
 Token-based method to solve KeyCaptcha.
 
 ```go
@@ -277,6 +308,9 @@ code, err := client.Solve(req)
 ```
 
 ### Capy
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_capy)</sup>
+
 Token-based method to bypass Capy puzzle captcha.
 
 ```go
@@ -287,11 +321,13 @@ captcha:= api2captcha.Capy{
 req := captchaToRequest()
 req.SetProxy("HTTPS", "login:password@IP_address:PORT")
 code, err := client.Solve(req)
-
 ```
 
 ### Grid
-Grid method is originally called Old ReCaptcha V2 method. The method can be used to bypass any type of captcha where you can apply a grid on image and need to click specific grid boxes. Returns numbers of boxes.
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#grid)</sup>
+
+Grid method is originally called Old reCAPTCHA V2 method. The method can be used to bypass any type of captcha where you can apply a grid on image and need to click specific grid boxes. Returns numbers of boxes.
 
 ```go
 captcha:= api2captcha.Grid{
@@ -307,6 +343,9 @@ captcha:= api2captcha.Grid{
 ```
 
 ### Canvas
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#canvas)</sup>
+
 Canvas method can be used when you need to draw a line around an object on image. Returns a set of points' coordinates to draw a polygon.
 
 ```go
@@ -321,6 +360,9 @@ captcha:= api2captcha.Canvas{
 ```
 
 ### ClickCaptcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#coordinates)</sup>
+
 ClickCaptcha method returns coordinates of points on captcha image. Can be used if you need to click on particular points on the image.
 
 ```go
@@ -333,28 +375,55 @@ captcha:= api2captcha.Coordinates{
 ```
 
 ### Rotate
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#solving_rotatecaptcha)</sup>
+
 This method can be used to solve a captcha that asks to rotate an object. Mostly used to bypass FunCaptcha. Returns the rotation angle.
 
 ```go
 captcha:= api2captcha.Rotate{
     File: "path/to/captcha.jpg",
-    Angle: 40,
+    Angle: 15,
     Lang: "en",
     HintImageFile: "path/to/hint.jpg",
     HintText: "Put the images in the correct way",
 }
 ```
-### GeeTestV4
-Use this method to solve GeeTest v4. Returns the response in JSON.
+
+### Amazon WAF
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#amazon-waf)</sup>
+
+Use this method to solve Amazon WAF Captcha also known as AWS WAF Captcha is a part of Intelligent threat mitigation for Amazon AWS. Returns JSON with the token.
 
 ```go
-captcha:= api2captcha.GeeTestV4{
-    CaptchaId: "e392e1d7fd421dc63325744d5a2b9c73",
-    Url: "https://www.site.com/page/",
+captcha:= api2captcha.AmazonWAF {
+   Iv: "CgAHbCe2GgAAAAAj",
+   SiteKey: "0x1AAAAAAAAkg0s2VIOD34y5",
+   Url: "https://non-existent-example.execute-api.us-east-1.amazonaws.com/latest",
+   Context: "9BUgmlm48F92WUoqv97a49ZuEJJ50TCk9MVr3C7WMtQ0X6flVbufM4n8mjFLmbLVAPgaQ1Jydeaja94iAS49ljb",
+   ChallengeScript: "https://41bcdd4fb3cb.610cd090.us-east-1.token.awswaf.com/41bcdd4fb3cb/0d21de737ccb/cd77baa6c832/challenge.js"
+   CaptchaScript: "https://41bcdd4fb3cb.610cd090.us-east-1.captcha.awswaf.com/41bcdd4fb3cb/0d21de737ccb/cd77baa6c832/captcha.js"
+}
+```
+
+### Cloudflare Turnstile
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#turnstile)</sup>
+
+Use this method to solve Cloudflare Turnstile. Returns JSON with the token.
+
+```go
+captcha:= api2captcha.CloudflareTurnstile{
+   SiteKey: "0x1AAAAAAAAkg0s2VIOD34y5",
+   Url: "http://mysite.com/",
 }
 ```
 
 ### Lemin Cropped Captcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#lemin)</sup>
+
 Use this method to solve Lemin Captcha challenge. Returns JSON with answer containing the following values: answer, challenge_id.
 
 ```go
@@ -366,17 +435,10 @@ captcha:= Lemin{
 }
 ```
 
-### Cloudflare Turnstile
-Use this method to solve Cloudflare Turnstile. Returns JSON with the token.
-
-```go
-captcha:= api2captcha.CloudflareTurnstile{
-   SiteKey: "0x1AAAAAAAAkg0s2VIOD34y5",
-   Url: "http://mysite.com/",
-}
-```
-
 ### CyberSiARA
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#cybersiara)</sup>
+
 Use this method to solve CyberSiARA and obtain a token to bypass the protection.
 ```go
 captcha:= api2captcha.CyberSiARA{
@@ -387,24 +449,34 @@ captcha:= api2captcha.CyberSiARA{
 ```
 
 ### DataDome
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#datadome)</sup>
+
 Use this method to solve DataDome and obtain a token to bypass the protection.
-To solve the DataDome captcha, you must use a proxy.
+
+> [!IMPORTANT]
+> To solve the DataDome captcha, you must use a proxy. It is recommended to use [residential proxies].
+
+
 ```go
 captcha:= api2captcha.DataDome{
-  Url: "https://test.com",
-  CaptchaUrl: "https://test.com/captcha/",
-  Proxytype: "http",
-  Proxy: "proxyuser:strongPassword@123.123.123.123:3128",
-  UserAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+   Url: "https://test.com",
+   CaptchaUrl: "https://test.com/captcha/",
+   Proxytype: "http",
+   Proxy: "proxyuser:strongPassword@123.123.123.123:3128",
+   UserAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
 }
 ```
 
 ### MTCaptcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#mtcaptcha)</sup>
+
 Use this method to solve MTCaptcha and obtain a token to bypass the protection.
 ```go
 captcha:= api2captcha.MTCaptcha{
-  Url: "https://service.mtcaptcha.com/mtcv1/demo/index.html",
-  SiteKey: "MTPublic-DemoKey9M",
+   Url: "https://service.mtcaptcha.com/mtcv1/demo/index.html",
+   SiteKey: "MTPublic-DemoKey9M",
 }
 ```
 
@@ -412,21 +484,40 @@ captcha:= api2captcha.MTCaptcha{
 Use this method to solve Yandex and obtain a token to bypass the protection.
 ```go
 captcha:= api2captcha.Yandex{
-  Url: "https://rutube.ru",
-  SiteKey: "Y5Lh0tiycconMJGsFd3EbbuNKSp1yaZESUOIHfeV",
+   Url: "https://example.com",
+   SiteKey: "Y5Lh0tiycconMJGsFd3EbbuNKSp1yaZESUOIHfeV",
 }
 ```
 
-### Friendlycaptcha
-Use this method to solve Friendly Captcha and obtain a token to bypass the protection.
+### Tencent
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#tencent)</sup>
+
+Use this method to solve Tencent and obtain a token to bypass the protection.
 ```go
-captcha:= api2captcha.Friendly{
-  Url: "https://example.com",
-  SiteKey: "2FZFEVS1FZCGQ9",
+tencentCaptcha := api2captcha.Tencent{
+   AppId: "2092215077",
+   Url:   "http://lcec.lclog.cn/cargo/NewCargotracking?blno=BANR01XMHB0004&selectstate=BLNO",
+}
+```
+
+### atbCAPTCHA
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#atb-captcha)</sup>
+
+Use this method to solve atbCAPTCHA and obtain a token to bypass the protection.
+```go
+atbCaptcha := api2captcha.AtbCAPTCHA{
+   AppId:     "af23e041b22d000a11e22a230fa8991c",
+   Url:       "https://www.playzone.vip/",
+   ApiServer: "https://cap.aisecurius.com",
 }
 ```
 
 ### Cutcaptcha
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#cutcaptcha)</sup>
+
 Use this method to solve Cutcaptcha and obtain a token to bypass the protection.
 ```go
 captcha:= api2captcha.Cutcaptcha{
@@ -436,55 +527,27 @@ captcha:= api2captcha.Cutcaptcha{
 }
 ```
 
-### Amazon WAF
-Use this method to solve Amazon WAF Captcha also known as AWS WAF Captcha is a part of Intelligent threat mitigation for Amazon AWS. Returns JSON with the token.
+### Friendly Captcha
 
+<sup>[API method description.](https://2captcha.com/2captcha-api#friendly-captcha)</sup>
+
+Use this method to solve Friendly Captcha and obtain a token to bypass the protection.
 ```go
-captcha:= api2captcha.AmazonWAF {
-    Iv: "CgAHbCe2GgAAAAAj",
-    SiteKey: "0x1AAAAAAAAkg0s2VIOD34y5",
-    Url: "https://non-existent-example.execute-api.us-east-1.amazonaws.com/latest",
-    Context: "9BUgmlm48F92WUoqv97a49ZuEJJ50TCk9MVr3C7WMtQ0X6flVbufM4n8mjFLmbLVAPgaQ1Jydeaja94iAS49ljb",
-    ChallengeScript: "https://41bcdd4fb3cb.610cd090.us-east-1.token.awswaf.com/41bcdd4fb3cb/0d21de737ccb/cd77baa6c832/challenge.js"
-    CaptchaScript: "https://41bcdd4fb3cb.610cd090.us-east-1.captcha.awswaf.com/41bcdd4fb3cb/0d21de737ccb/cd77baa6c832/captcha.js"
+captcha:= api2captcha.Friendly{
+   Url: "https://example.com",
+   SiteKey: "2FZFEVS1FZCGQ9",
 }
 ```
 
-### Tencent
-Use this method to solve Tencent and obtain a token to bypass the protection.
-```go
-	tencentCaptcha := api2captcha.Tencent{
-    AppId: "2092215077",
-    Url:   "http://lcec.lclog.cn/cargo/NewCargotracking?blno=BANR01XMHB0004&selectstate=BLNO",
-}
-```
+### Audio Captcha
 
-### AtbCAPTCHA
-Use this method to solve AtbCAPTCHA and obtain a token to bypass the protection.
-```go
-	atbCaptcha := api2captcha.AtbCAPTCHA{
-    AppId:     "af23e041b22d000a11e22a230fa8991c",
-    Url:       "https://www.playzone.vip/",
-    ApiServer: "https://cap.aisecurius.com",
-}
-```
+<sup>[API method description.](https://2captcha.com/2captcha-api#audio)</sup>
 
-### Cutcaptcha
-Use this method to solve Cutcaptcha and obtain a token to bypass the protection.
-```go
-	cutCaptcha := api2captcha.Cutcaptcha{
-    MiseryKey:  "a1488b66da00bf332a1488993a5443c79047e752",
-    Url:        "https://filecrypt.co/Container/237D4D0995.html",
-    DataApiKey: "SAb83IIB",
-}
-```
-
-### Audio
 Use this method to solve Audio captcha and obtain a token to bypass the protection.
 ```go
-	audio := api2captcha.Audio{
-    Base64: fileBase64Str,
-    Lang:   "en",
+audio := api2captcha.Audio{
+   Base64: fileBase64Str,
+   Lang:   "en",
 }
 ```
 
@@ -511,9 +574,12 @@ if code == nil {
 }
 
 fmt.Println("code "+*code)
-
 ```
+
 ### balance
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#additional-methods)</sup>
+
 Use this method to get your account's balance
 
 ```go
@@ -523,18 +589,55 @@ if err != nil {
 }
 ```
 ### report
+
+<sup>[API method description.](https://2captcha.com/2captcha-api#complain)</sup>
+
 Use this method to report good or bad captcha answer.
 
-```c++
+```go
 err := client.Report(id, true) // solved correctly
 err := client.Report(id, false) // solved incorrectly
+```
 
+## Error Handling
+
+When using the 2Captcha API, it's important to handle errors properly to ensure smooth interaction with the service. Below is an example of error handling in the `2captcha-go` library:
+
+```go
+func main() {
+	result, err := client.Text("If tomorrow is Saturday, what day is today?")
+	if err != nil {
+		switch e := err.(type) {
+		case *api.ValidationException:
+			// Invalid parameters passed
+			log.Fatalf("Validation error: %v", e)
+		case *api.NetworkException:
+			// Network error occurred
+			log.Fatalf("Network error: %v", e)
+		case *api.ApiException:
+			// API responded with an error
+			log.Fatalf("API error: %v", e)
+		case *api.TimeoutException:
+			// CAPTCHA is not solved within the expected time
+			log.Fatalf("Timeout error: %v", e)
+		default:
+			// Unknown error
+			log.Fatalf("Unexpected error: %v", err)
+		}
+	}
+
+	fmt.Printf("CAPTCHA solved! Result: %s\n", result.Text)
+}
 ```
 
 ## Proxies
-You can pass your proxy as an additional argument for methods: recaptcha, funcaptcha, geetest, geetest v4, hcaptcha, keycaptcha, capy puzzle, lemin, turnstile, amazon waf, CyberSiARA, DataDome, MTCaptcha and etc. The proxy will be forwarded to the API to solve the captcha.
+You can pass your proxy as an additional argument for methods: recaptcha, funcaptcha, geetest, geetest v4, keycaptcha, capy puzzle, lemin, turnstile, amazon waf, CyberSiARA, DataDome, MTCaptcha and etc. The proxy will be forwarded to the API to solve the captcha.
 
 We have our own proxies that we can offer you. [Buy residential proxies](https://2captcha.com/proxy/residential-proxies) for avoid restrictions and blocks. [Quick start](https://2captcha.com/proxy?openAddTrafficModal=true).
+
+## Examples
+
+Examples of solving all supported captcha types are located in the [examples] directory.
 
 ## Get in touch
 
@@ -547,9 +650,20 @@ There are many ways to contribute, of which development is only one! Find your n
 
 <a href="mailto:job@2captcha.com"><img src="https://github.com/user-attachments/assets/36d23ef5-7866-4841-8e17-261cc8a4e033" width="80" height="30"></a>
 
+## License
+
+The code in this repository is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
+
+### Graphics and Trademarks
+
+The graphics and trademarks included in this repository are not covered by the MIT License. Please contact <a href="mailto:support@2captcha.com">support</a> for permissions regarding the use of these materials.
+
+
 <!-- Shared links -->
 [2Captcha]: https://2captcha.com/
-[2captcha sofware catalog]: https://2captcha.com/software
+[2captcha software catalog]: https://2captcha.com/software
 [pingback settings]: https://2captcha.com/setting/pingback
 [post options]: https://2captcha.com/2captcha-api#normal_post
 [list of supported languages]: https://2captcha.com/2captcha-api#language
+[residential proxies]: https://2captcha.com/proxy/residential-proxies
+[examples]: ./examples/
