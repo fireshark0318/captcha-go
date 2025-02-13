@@ -8,6 +8,7 @@ The easiest way to quickly integrate [2Captcha] into your code to automate solvi
   - [Text](#text-captcha)
   - [ReCaptcha v2](#recaptcha-v2)
   - [ReCaptcha v3](#recaptcha-v3)
+  - [reCAPTCHA Enterprise](#recaptcha-enterprise)
   - [FunCaptcha](#funcaptcha)
   - [GeeTest](#geetest)
   - [hCaptcha](#hcaptcha)
@@ -17,12 +18,18 @@ The easiest way to quickly integrate [2Captcha] into your code to automate solvi
   - [Canvas](#canvas)
   - [ClickCaptcha](#clickcaptcha)
   - [Rotate](#rotate)
-  - [GeeTestV4](#gee-test-v4)
+  - [AmazonWAF](#amazon-waf)
+  - [CloudflareTurnstile](#cloudflare-turnstile)
+  - [Lemin Cropped Captcha](#lemin-cropped-captcha)
+  - [GeeTestV4](#geetestv4)
+  - [CyberSiARA](#cybersiara)
+  - [DataDome](#datadome)
+  - [MTCaptcha](#mtcaptcha)
 - [Other methods](#other-methods)
   - [send / getResult](#send--getresult)
   - [balance](#balance)
   - [report](#report)
-
+- [Proxies](#proxies)
 
 ## Installation
 To install the api client, use this:
@@ -56,7 +63,7 @@ client.PollingInterval = 100
 
 |Option|Default value|Description|
 |---|---|---|
-|soft_id|-|your software ID obtained after publishing in [2captcha sofware catalog]|
+|soft_id|4583|Your software ID obtained after publishing in [2captcha sofware catalog]|
 |callback|-|URL of your web-sever that receives the captcha recognition result. The URl should be first registered in [pingback settings] of your account|
 |default_timeout|120|Timeout in seconds for all captcha types except ReCaptcha. Defines how long the module tries to get the answer from `res.php` API endpoint|
 |recaptcha_timeout|600|Timeout for ReCaptcha in seconds. Defines how long the module tries to get the answer from `res.php` API endpoint|
@@ -159,6 +166,34 @@ cap := api2captcha.ReCaptcha{
    Action: "verify",
    Score: 0.3,
 }
+req := cap.ToRequest()
+req.SetProxy("HTTPS", "login:password@IP_address:PORT")
+code, err := client.Solve(req)
+```
+
+### reCAPTCHA Enterprise
+reCAPTCHA Enterprise can be used as reCAPTCHA V2 and reCAPTCHA V3. Below is a usage example for both versions.
+
+```go
+// reCAPTCHA V2
+cap :=  api2captcha.ReCaptcha({
+   SiteKey: "6Le-wvkSVVABCPBMRTvw0Q4Muexq1bi0DJwx_mJ-",
+   Url: "https://mysite.com/page/with/recaptcha",
+   Invisible: true,
+   Action: "verify",
+   Enterprise: true,
+})
+
+// reCAPTCHA V3
+cap := api2captcha.ReCaptcha{
+   SiteKey: "6Le-wvkSVVABCPBMRTvw0Q4Muexq1bi0DJwx_mJ-",
+   Url: "https://mysite.com/page/with/recaptcha",
+   Version: "v3",
+   Action: "verify",
+   Score: 0.3,
+   Enterprise: true,
+}
+
 req := cap.ToRequest()
 req.SetProxy("HTTPS", "login:password@IP_address:PORT")
 code, err := client.Solve(req)
@@ -302,6 +337,102 @@ cap := api2captcha.GeeTestV4{
 }
 ```
 
+### Lemin Cropped Captcha
+Use this method to solve Lemin Captcha challenge. Returns JSON with answer containing the following values: answer, challenge_id.
+
+```go
+cap := Lemin{
+   CaptchaId: "CROPPED_3dfdd5c_d1872b526b794d83ba3b365eb15a200b",
+   Url:   "https://www.site.com/page/",
+   DivId:     "lemin-cropped-captcha",
+   ApiServer: "api.leminnow.com",
+}
+```
+
+### Cloudflare Turnstile
+Use this method to solve Cloudflare Turnstile. Returns JSON with the token.
+
+```go
+cap := api2captcha.CloudflareTurnstile{
+   SiteKey: "0x1AAAAAAAAkg0s2VIOD34y5",
+   Url: "http://mysite.com/",
+}
+```
+
+### CyberSiARA
+Use this method to solve CyberSiARA and obtain a token to bypass the protection.
+```go
+cap := api2captcha.CyberSiARA{
+   MasterUrlId: "12333-3123123",
+   Url: "https://test.com",
+   UserAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+}
+```
+
+### DataDome
+Use this method to solve DataDome and obtain a token to bypass the protection.
+To solve the DataDome captcha, you must use a proxy.
+```go
+cap := api2captcha.DataDome{
+  Url: "https://test.com",
+  CaptchaUrl: "https://test.com/captcha/",
+  Proxytype: "http",
+  Proxy: "proxyuser:strongPassword@123.123.123.123:3128",
+  UserAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+}
+```
+
+### MTCaptcha
+Use this method to solve MTCaptcha and obtain a token to bypass the protection.
+```go
+cap := api2captcha.MTCaptcha{
+  Url: "https://service.mtcaptcha.com/mtcv1/demo/index.html",
+  SiteKey: "MTPublic-DemoKey9M",
+}
+```
+
+### Yandex
+Use this method to solve Yandex and obtain a token to bypass the protection.
+```go
+cap := api2captcha.Yandex{
+  Url: "https://rutube.ru",
+  SiteKey: "Y5Lh0tiycconMJGsFd3EbbuNKSp1yaZESUOIHfeV",
+}
+```
+
+### Friendly Captcha
+Use this method to solve Friendly Captcha and obtain a token to bypass the protection.
+```go
+cap := api2captcha.Friendly{
+  Url: "https://example.com",
+  SiteKey: "2FZFEVS1FZCGQ9",
+}
+```
+
+### CutCaptcha
+Use this method to solve CutCaptcha and obtain a token to bypass the protection.
+```go
+cap := api2captcha.CutCaptcha{
+   MiseryKey: "a1488b66da00bf332a1488993a5443c79047e752",
+   DataApiKey: "SAb83IIB",
+   Url: "https://example.cc/foo/bar.html",
+}
+```
+
+### Amazon WAF
+Use this method to solve Amazon WAF Captcha also known as AWS WAF Captcha is a part of Intelligent threat mitigation for Amazon AWS. Returns JSON with the token.
+
+```go
+cap := api2captcha.AmazonWAF {
+    Iv: "CgAHbCe2GgAAAAAj",
+    SiteKey: "0x1AAAAAAAAkg0s2VIOD34y5",
+    Url: "https://non-existent-example.execute-api.us-east-1.amazonaws.com/latest",
+    Context: "9BUgmlm48F92WUoqv97a49ZuEJJ50TCk9MVr3C7WMtQ0X6flVbufM4n8mjFLmbLVAPgaQ1Jydeaja94iAS49ljb",
+    ChallengeScript: "https://41bcdd4fb3cb.610cd090.us-east-1.token.awswaf.com/41bcdd4fb3cb/0d21de737ccb/cd77baa6c832/challenge.js"
+    CaptchaScript: "https://41bcdd4fb3cb.610cd090.us-east-1.captcha.awswaf.com/41bcdd4fb3cb/0d21de737ccb/cd77baa6c832/captcha.js"
+}
+```
+
 ## Other methods
 
 ### Send / GetResult
@@ -345,6 +476,13 @@ err := client.Report(id, false) // solved incorrectly
 
 ```
 
+## Proxies
+You can pass your proxy as an additional argument for methods: recaptcha, funcaptcha, geetest, geetest v4, hcaptcha, keycaptcha, capy puzzle, lemin, turnstile, amazon waf, CyberSiARA, DataDome, MTCaptcha and etc. The proxy will be forwarded to the API to solve the captcha.
+
+We have our own proxies that we can offer you. [Buy residential proxies](https://2captcha.com/proxy/residential-proxies) for avoid restrictions and blocks. [Quick start](https://2captcha.com/proxy?openAddTrafficModal=true).
+
+
+<!-- Shared links -->
 [2Captcha]: https://2captcha.com/
 [2captcha sofware catalog]: https://2captcha.com/software
 [pingback settings]: https://2captcha.com/setting/pingback
