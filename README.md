@@ -483,53 +483,13 @@ captcha:= api2captcha.MTCaptcha{
 ### Yandex
 Use this method to solve Yandex and obtain a token to bypass the protection.
 ```go
-captcha:= api2captcha.Yandex{
-   Url: "https://example.com",
-   SiteKey: "Y5Lh0tiycconMJGsFd3EbbuNKSp1yaZESUOIHfeV",
-}
-```
 
-### Tencent
-
-<sup>[API method description.](https://2captcha.com/2captcha-api#tencent)</sup>
-
-Use this method to solve Tencent and obtain a token to bypass the protection.
-```go
-tencentCaptcha := api2captcha.Tencent{
-   AppId: "2092215077",
-   Url:   "http://lcec.lclog.cn/cargo/NewCargotracking?blno=BANR01XMHB0004&selectstate=BLNO",
-}
-```
-
-### atbCAPTCHA
-
-<sup>[API method description.](https://2captcha.com/2captcha-api#atb-captcha)</sup>
-
-Use this method to solve atbCAPTCHA and obtain a token to bypass the protection.
-```go
-atbCaptcha := api2captcha.AtbCAPTCHA{
-   AppId:     "af23e041b22d000a11e22a230fa8991c",
-   Url:       "https://www.playzone.vip/",
-   ApiServer: "https://cap.aisecurius.com",
-}
-```
-
-### Cutcaptcha
-
-<sup>[API method description.](https://2captcha.com/2captcha-api#cutcaptcha)</sup>
-
-Use this method to solve Cutcaptcha and obtain a token to bypass the protection.
-```go
-captcha:= api2captcha.Cutcaptcha{
    MiseryKey: "a1488b66da00bf332a1488993a5443c79047e752",
    DataApiKey: "SAb83IIB",
    Url: "https://example.cc/foo/bar.html",
 }
 ```
 
-### Friendly Captcha
-
-<sup>[API method description.](https://2captcha.com/2captcha-api#friendly-captcha)</sup>
 
 Use this method to solve Friendly Captcha and obtain a token to bypass the protection.
 ```go
